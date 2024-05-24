@@ -1,5 +1,6 @@
 @file:Suppress("SpellCheckingInspection")
 
+
 enableFeaturePreview("STABLE_CONFIGURATION_CACHE")
 
 include(
@@ -355,13 +356,20 @@ pluginManagement {
     buildscript {
 
         repositories {
-            mavenCentral()
+            mavenLocal()
+            //首选国外镜像加快github CI
             google()
+            mavenCentral()
             maven("https://maven.aliyun.com/repository/central")
             maven("https://maven.aliyun.com/repository/google")
             maven("https://maven.aliyun.com/repository/gradle-plugin")
             maven("https://maven.aliyun.com/repository/jcenter")
             maven("https://maven.aliyun.com/repository/public")
+            maven("https://www.jitpack.io")
+            maven("https://120.25.164.233:8081/nexus/content/groups/public/")
+            maven("https://maven.aliyun.com/repository/central")
+            google { url = uri("https://maven.aliyun.com/repository/google") }
+            mavenCentral { url = uri("https://maven.aliyun.com/repository/public") }
         }
 
         dependencies /* Gather platform information. */ {
@@ -407,33 +415,8 @@ pluginManagement {
         }
 
         dependencies /* Android/Kotlin Gradle Plugin. */  {
-            arrayOf(
-                arrayOf("com.android.tools.build:gradle", androidMap),
-                arrayOf("org.jetbrains.kotlin:kotlin-gradle-plugin", kotlinMap),
-            ).forEach {
-                val (classpath, map) = it
-
-                map as? Map<*, *> ?: throw Exception("Invalid map for classpath")
-
-                val version = map[platformVersion] as? String
-                val versionUnfocused = map[platformVersionUnfocused] as? String
-                val versionPredicted = (map["$previewIdentifier1Up$platformVersion"]
-                    ?: map["$previewIdentifier1Up$platformVersionUnfocused"]) as? String
-                val versionFallback = map[fallbackIdentifier] as? String
-
-                var suffix = ""
-                val classpathNotation = "$classpath:" + (
-                        version ?: versionUnfocused?.also {
-                            suffix += unfocusedSuffix
-                        } ?: versionPredicted?.also {
-                            suffix += predictedSuffix
-                        } ?: versionFallback?.also {
-                            suffix += fallbackSuffix
-                        } ?: throw Exception("$unknownIdentifier1Up version for classpath $classpath"))
-
-                infoList += "Classpath: \"$classpathNotation\"$suffix"
-                classpath(classpathNotation)
-            }
+            classpath("com.android.tools.build:gradle:8.3.2")
+            classpath ("org.jetbrains.kotlin:kotlin-gradle-plugin:1.8.21")
         }
 
     }
