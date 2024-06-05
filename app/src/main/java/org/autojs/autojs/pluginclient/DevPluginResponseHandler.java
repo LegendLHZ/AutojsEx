@@ -3,6 +3,7 @@ package org.autojs.autojs.pluginclient;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.google.gson.JsonElement;
@@ -103,7 +104,17 @@ public class DevPluginResponseHandler implements Handler {
         String idMd5 = MD5Utils.md5(id);
         return Observable
                 .fromCallable(() -> {
-                    File dir = new File(mCacheDir, idMd5);
+                    Log.i("Autojs", "收到远程文件");
+                    var cacheDir = mCacheDir;
+                    if (cacheDir.exists()) {
+                        if (cacheDir.isDirectory()) {
+                            PFiles.deleteFilesOfDir(cacheDir);
+                        } else {
+                            cacheDir.delete();
+                            cacheDir.mkdirs();
+                        }
+                    }
+                    File dir = new File(cacheDir, idMd5);
                     byte[] byteArray = bytes.byteString.toByteArray();
                     Zip.unzip(new ByteArrayInputStream(byteArray), dir);
                     return dir;
@@ -181,6 +192,14 @@ public class DevPluginResponseHandler implements Handler {
 
         Observable
                 .fromCallable(() -> {
+                    if (toDir.exists()) {
+                        if (toDir.isDirectory()) {
+                            PFiles.deleteFilesOfDir(toDir);
+                        } else {
+                            toDir.delete();
+                            toDir.mkdirs();
+                        }
+                    }
                     copyDir(new File(dir), toDir);
                     return toDir.getPath();
                 })
