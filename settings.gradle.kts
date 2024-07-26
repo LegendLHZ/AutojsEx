@@ -74,7 +74,7 @@ pluginManagement {
                 "2022.2" to "1.8.20-RC2", /* Mar 23, 2023. */
                 "Preview2022.2" to "1.8.0", /* Mar 23, 2023. */
                 "2022.1" to "1.8.0-RC2", /* Dec 20, 2022. */
-                fallbackIdentifier to "1.8.0", /* Aug 17, 2023. */
+                fallbackIdentifier to "1.9.20", /* Aug 17, 2023. */
             )
         ),
         "idea" to mapOf(
@@ -127,7 +127,7 @@ pluginManagement {
         "1.8.20-RC2" to "1.0.9", /* Aug 16, 2023. */
         "1.8.0" to "1.0.9", /* Aug 16, 2023. */
         "1.8.0-RC2" to "1.0.8", /* Aug 16, 2023. */
-        fallbackIdentifier to "1.8.0-1.0.9", /* Aug 16, 2023. */
+        fallbackIdentifier to "1.9.20-1.0.14", /* Aug 16, 2023. */
     )
 
     val platformCodenameForAS = mapOf(
